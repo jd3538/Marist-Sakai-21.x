@@ -13,6 +13,8 @@
  * See the License for the specific language governing permissions and
  * limitations under the License.
  */
+ /* Changes:
+ (01) Customize for Marist OneDrive Endpoint - JD - 20180322 */
 package org.sakaiproject.onedrive.service;
 
 import java.util.List;
@@ -47,7 +49,10 @@ public interface OneDriveService {
 	// ENDPOINTS
 	public final String ENDPOINT_AUTHORIZE = "authorize";
 	public final String ENDPOINT_GRAPH = "https://graph.microsoft.com/v1.0/";
-	public final String ENDPOINT_COMMON_LOGIN = "https://login.microsoftonline.com/common/oauth2/v2.0/";
+	// Change (01) Begins - JD - 20180322
+	// public final String ENDPOINT_COMMON_LOGIN = "https://login.microsoftonline.com/common/oauth2/v2.0/";
+	public final String ENDPOINT_COMMON_LOGIN = "https://login.microsoftonline.com/maristcollege.onmicrosoft.com/oauth2/v2.0/";
+	// Change (01) Ends - JD - 20180322
 	public final String ENDPOINT_DRIVES = "drives/";
 	public final String ENDPOINT_ME = "me";
 	public final String ENDPOINT_CHILDREN = "/children";
