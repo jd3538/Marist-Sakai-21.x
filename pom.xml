@@ -123,7 +123,8 @@
                 <module>webservices</module>
 		<module>wicket</module>
 		<module>attendance-master</module>
-	        <module>certification</module>	
+		<module>certification</module>
+		<module>scorm</module>
             </modules>
         </profile>
         <profile>
@@ -215,6 +216,7 @@
 		<module>yaft</module>
 		<module>attendance-master</module>
 		<module>certification</module>
+		<module>scorm</module>
             </modules>
         </profile>
 
