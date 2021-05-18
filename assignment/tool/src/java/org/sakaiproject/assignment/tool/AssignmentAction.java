@@ -3599,10 +3599,7 @@ public class AssignmentAction extends PagedResourceActionII {
             }
 
             // show alert if student is working on a draft
-            if (!s.getSubmitted() // not submitted
-                    && ((s.getSubmittedText() != null && s.getSubmittedText().length() > 0) // has some text
-                    || (s.getAttachments() != null && s.getAttachments().size() > 0))) // has some attachment
-            {
+            if (assignmentToolUtils.isDraftSubmission(s)) {
                 if (s.getAssignment().getCloseDate().isAfter(Instant.now())) {
                     // not pass the close date yet
                     addGradeDraftAlert = true;
@@ -11522,8 +11519,21 @@ public class AssignmentAction extends PagedResourceActionII {
 
         state.setAttribute(NEW_ASSIGNMENT_SECTION, "001");
         state.setAttribute(NEW_ASSIGNMENT_SUBMISSION_TYPE, Assignment.SubmissionType.TEXT_AND_ATTACHMENT_ASSIGNMENT_SUBMISSION.ordinal());
-        state.setAttribute(NEW_ASSIGNMENT_GRADE_TYPE, UNGRADED_GRADE_TYPE.ordinal());
-        state.setAttribute(NEW_ASSIGNMENT_GRADE_POINTS, "");
+        Boolean withGradesConfig = serverConfigurationService.getBoolean("assignment.grade.default", Boolean.TRUE);
+        state.setAttribute(WITH_GRADES, withGradesConfig);
+        if (withGradesConfig) {
+            state.setAttribute(NEW_ASSIGNMENT_GRADE_TYPE, SCORE_GRADE_TYPE.ordinal());
+            String defaultPointsConfig = serverConfigurationService.getString("assignment.points.default", "");
+            if (NumberUtils.isParsable(defaultPointsConfig)) {
+                float defaultPoints = NumberUtils.createFloat(defaultPointsConfig);
+                state.setAttribute(NEW_ASSIGNMENT_GRADE_POINTS, String.valueOf(defaultPoints));
+            } else {
+                state.setAttribute(NEW_ASSIGNMENT_GRADE_POINTS, "");
+            }
+        } else {
+            state.setAttribute(NEW_ASSIGNMENT_GRADE_TYPE, UNGRADED_GRADE_TYPE.ordinal());
+            state.setAttribute(NEW_ASSIGNMENT_GRADE_POINTS, "");
+        }
         state.setAttribute(NEW_ASSIGNMENT_CONTENT_ID, null);
         state.setAttribute(NEW_ASSIGNMENT_CONTENT_TITLE, null);
         state.setAttribute(NEW_ASSIGNMENT_CONTENT_LAUNCH_NEW_WINDOW, null);
