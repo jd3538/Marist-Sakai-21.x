@@ -1,5 +1,4 @@
 import { html, css, LitElement } from '../assets/lit-element/lit-element.js';
-import { unsafeHTML } from '../assets/lit-html/directives/unsafe-html.js';
 import { ifDefined } from '../assets/lit-html/directives/if-defined.js';
 import { repeat } from '../assets/lit-html/directives/repeat.js';
 import "./sakai-dashboard-widget.js";
@@ -9,9 +8,7 @@ import "./sakai-grades-widget.js";
 import "./sakai-announcements-widget.js";
 import "./sakai-forums-widget.js";
 import "./sakai-widget-picker.js";
-import { Sortable } from "../assets/sortablejs/modular/sortable.esm.js";
 import { loadProperties } from "../sakai-i18n.js";
-import { sakaiWidgets } from "./sakai-widgets.js";
 
 export class SakaiWidgetPanel extends LitElement {
 
@@ -56,16 +53,32 @@ export class SakaiWidgetPanel extends LitElement {
 
   get editing() { return this._editing; }
 
-  shouldUpdate(changed) {
+  set layout(value) {
+
+    this._layout = value;
+
+    if (this.widgetIds) {
+      this._layout = this._layout.filter(l => this.widgetIds.includes(l));
+    }
+  }
+
+  get layout() { return this._layout; }
+
+  shouldUpdate() {
     return this.i18n;
   }
 
   fireChanged() {
-    this.dispatchEvent(new CustomEvent("changed", { bubbles: true , detail: { layout: this.layout }}));
+    this.dispatchEvent(new CustomEvent("changed", { bubbles: true, detail: { layout: this.layout }}));
   }
 
-  showWidgetPicker(e) {
-    this.changeState("add");
+  showWidgetPicker() {
+
+    if (this.state === "add") {
+      this.changeState("view");
+    } else {
+      this.changeState("add");
+    }
   }
 
   stateSelected(e) {
@@ -108,6 +121,10 @@ export class SakaiWidgetPanel extends LitElement {
       });
     } else {
       this.widgets.forEach(w => w.state = this.state);
+      if (this.layout.indexOf("picker") !== -1) {
+        // The picker's currently visible. Remove it.
+        this.layout.shift();
+      }
       this.requestUpdate();
     }
   }
@@ -242,7 +259,7 @@ export class SakaiWidgetPanel extends LitElement {
       case "picker":
         return this.editing ? html`<div><sakai-widget-picker @remove=${this.removeWidget} id="picker" state="remove"></div>` : "";
       default:
-        return ""
+        return "";
     }
   }
 
@@ -256,14 +273,14 @@ export class SakaiWidgetPanel extends LitElement {
                 @click=${this.showWidgetPicker}
                 title="${this.i18n["add_a_widget"]}"
                 aria-label="${this.i18n["add_a_widget"]}">
-              <sakai-icon type="add" size="small">
+              <sakai-icon type="add" size="small"></sakai-icon>
+              <div id="add-text">${this.i18n["add_a_widget"]}</div>
             </a>
           </div>
-          <div id="add-text">${this.i18n["add_a_widget"]}</div>
         </div>
       ` : ""}
 
-      <div id="grid" class="col${this.columns}grid">
+      <div id="grid">
         ${repeat(this.layout, w => w, w => html`
           ${this.getWidget(w)}
         `)}
@@ -289,31 +306,25 @@ export class SakaiWidgetPanel extends LitElement {
       #add-button sakai-icon {
         color: var(--sakai-widget-panel-add-button-color, green);
       }
+      a {
+        color: var(--link-color);
+      }
       #add-text {
+        display: inline-block;
         font-weight: bold;
         color: var(--sakai-widget-panel-add-text-color);
         font-size: var(--sakai-widget-panel-add-text-size, 14px);
         margin-left: 6px;
       }
       .faded {
+        pointer-events: none;
         opacity: 0.4;
       }
 
       #grid {
         display: grid;
+        grid-template-columns: repeat(auto-fill, minmax(var(--sakai-widget-panel-min-widget-width, 350px), 1fr));
         grid-gap: var(--sakai-widget-panel-gutter-width, 1rem);
-      }
-
-      .col1grid {
-        grid-template-columns: repeat(1, minmax(300px, 1fr));
-      }
-
-      .col2grid {
-        grid-template-columns: repeat(2, minmax(300px, 1fr));
-      }
-
-      .col3grid {
-        grid-template-columns: repeat(3, minmax(300px, 1fr));
       }
     `;
   }
