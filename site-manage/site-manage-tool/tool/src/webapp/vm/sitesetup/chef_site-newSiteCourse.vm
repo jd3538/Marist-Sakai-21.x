@@ -136,8 +136,7 @@
 									style="padding-left:1.5em"
 								#end
 								>
-								## Chang
-								e (01) Begins - JD - 20180322
+								## Change (01) Begins - JD - 20180322
 								##<input type="checkbox" name="providerCourseAdd" value="$!sectionObject.eid" id="course$courseNumber"
 								<input type="radio" name="providerCourseAdd" value="$!sectionObject.eid" id="course$courseNumber"
 								## Change (01) Ends - JD - 20180322
