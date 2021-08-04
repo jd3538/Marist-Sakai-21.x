@@ -111,11 +111,16 @@
             margin-right: 5px;
             margin-bottom: 5px;
             width: 340px;
-            max-height: 128px;
+            padding: 5px;
 
-            .roster-table-cell .roster-mobile-label {
-                display: inline;
-                margin-right: 20px;
+            .roster-picture-card {
+                margin-right: 10px;
+                min-width: 76px;
+                max-width: 76px;
+                .roster-picture {
+                    width: 100%;
+                    border: 1px solid #BBB;
+                }
             }
 
             .roster-info-card {
@@ -155,7 +160,6 @@
             grid-template-columns: repeat(auto-fill, 120px);
         }
     }
-    // end card view styles
 
     .nameAudioPlayer {
         margin-left: 10px;
