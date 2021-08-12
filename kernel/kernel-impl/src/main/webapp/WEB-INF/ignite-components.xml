@@ -205,7 +205,48 @@
                 </bean>
                 <bean parent="org.sakaiproject.ignite.cache.transactional">
                     <property name="name" value="org.sakaiproject.hbm.privacy.PrivacyRecord"/>
+	    	</bean>
+		<!-- NEEDED for SCORM PLayer -->
+                <bean parent="org.sakaiproject.ignite.cache.transactional">
+                    <property name="name" value="org.adl.datamodels.SCODataManager"/>
                 </bean>
+                <bean parent="org.sakaiproject.ignite.cache.transactional">
+                    <property name="name" value="org.adl.datamodels.SCODataManager.dataModels"/>
+                </bean>
+                <bean parent="org.sakaiproject.ignite.cache.transactional">
+                    <property name="name" value="org.adl.datamodels.ieee.SCORM_2004_DM.mElements"/>
+                </bean>
+                <bean parent="org.sakaiproject.ignite.cache.transactional">
+                    <property name="name" value="org.adl.datamodels.DMElementDescriptor"/>
+                </bean>
+                <bean parent="org.sakaiproject.ignite.cache.transactional">
+                    <property name="name" value="org.adl.datamodels.DMElement.mChildren"/>
+                </bean>
+                <bean parent="org.sakaiproject.ignite.cache.transactional">
+                    <property name="name" value="org.adl.datamodels.DataModel"/>
+                </bean>
+                <bean parent="org.sakaiproject.ignite.cache.transactional">
+                    <property name="name" value="org.adl.datamodels.DataModel.mElements"/>
+                </bean>
+                <bean parent="org.sakaiproject.ignite.cache.transactional">
+                    <property name="name" value="org.adl.datamodels.DMElement"/>
+                </bean>
+                <bean parent="org.sakaiproject.ignite.cache.transactional">
+                    <property name="name" value="org.adl.datamodels.DMTypeValidator"/>
+                </bean>
+                <bean parent="org.sakaiproject.ignite.cache.transactional">
+                    <property name="name" value="org.adl.datamodels.nav.SCORM_2004_NAV_DM.mElements"/>
+                </bean>
+                <bean parent="org.sakaiproject.ignite.cache.transactional">
+                    <property name="name" value="org.adl.datamodels.DMProcessingInfo"/>
+                </bean>
+                <bean parent="org.sakaiproject.ignite.cache.transactional">
+                    <property name="name" value="org.adl.datamodels.DMDelimiter"/>
+                </bean>
+                <bean parent="org.sakaiproject.ignite.cache.transactional">
+                    <property name="name" value="java.net.URL"/>
+                </bean>
+                <!-- END SCORM Config -->
             </list>
         </property>
         <property name="serverConfigurationService" ref="org.sakaiproject.component.api.ServerConfigurationService"/>
