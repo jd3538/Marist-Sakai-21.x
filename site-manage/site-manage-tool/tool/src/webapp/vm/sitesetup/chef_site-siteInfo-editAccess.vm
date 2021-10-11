@@ -111,7 +111,7 @@
 		#if (!$!disableAdditional)
 		## Change (01) Begins - JD - 20180322
 		#if ($canImportArchive)
-		## Change (01) Ends - Jd - 20180322
+		## Change (01) Ends - JD - 20180322
         <fieldset>
 			<legend>
 				<h4>$tlang.getString("ediacc.addit")</h4>
