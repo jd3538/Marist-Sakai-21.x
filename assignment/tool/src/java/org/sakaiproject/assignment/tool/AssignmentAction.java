@@ -2128,6 +2128,25 @@ public class AssignmentAction extends PagedResourceActionII {
             }
         }
 
+        try {
+            // Get site ID
+            String siteId = toolManager.getCurrentPlacement().getContext();
+            // Get site by ID
+            Site currentSite = siteService.getSite(siteId);
+            // Assignments Tool Configuration
+            ToolConfiguration toolConfig = currentSite.getToolForCommonId(ASSIGNMENT_TOOL_ID);
+                    
+            // Get visibility value of assignments tool
+            String isAssignmentsVisible = toolConfig.getConfig().getProperty(ToolManager.PORTAL_VISIBLE);
+            boolean isVisible = StringUtils.isBlank(isAssignmentsVisible) || StringUtils.equalsIgnoreCase(isAssignmentsVisible, Boolean.TRUE.toString());
+            
+            // Checks if the assignments tool is visible from the LHS Menu.
+            context.put("isAssignmentsToolVisible", isVisible);
+            
+        } catch(IdUnusedException e) {
+            log.error(e.getMessage(), e);
+        }
+                    
         state.removeAttribute(STATE_SUBMITTER);
         String template = (String) getContext(data).get("template");
         return template + TEMPLATE_STUDENT_VIEW_SUBMISSION_CONFIRMATION;
@@ -2562,6 +2581,25 @@ public class AssignmentAction extends PagedResourceActionII {
             addActivity(context, submission.getAssignment());
             context.put("itemHelpers", itemHelpers);
             context.put("taggable", Boolean.valueOf(true));
+        }
+        
+        try {
+            // Get site ID
+            String siteId = toolManager.getCurrentPlacement().getContext();
+            // Get site by ID
+            Site currentSite = siteService.getSite(siteId);
+            // Assignments Tool Configuration
+            ToolConfiguration toolConfig = currentSite.getToolForCommonId(ASSIGNMENT_TOOL_ID);
+                    
+            // Get visibility value of assignments tool
+            String isAssignmentsVisible = toolConfig.getConfig().getProperty(ToolManager.PORTAL_VISIBLE);
+            boolean isVisible = StringUtils.isBlank(isAssignmentsVisible) || StringUtils.equalsIgnoreCase(isAssignmentsVisible, Boolean.TRUE.toString());
+
+            // Checks if the assignments tool is visible from the LHS Menu.
+            context.put("isAssignmentsToolVisible", isVisible);
+            
+        } catch(IdUnusedException e) {
+            log.error(e.getMessage(), e);
         }
 
         // put supplement item into context
@@ -4181,6 +4219,9 @@ public class AssignmentAction extends PagedResourceActionII {
 
         String submissionId = state.getAttribute(GRADE_SUBMISSION_SUBMISSION_ID).toString();
         List<SubmitterSubmission> subs = (List<SubmitterSubmission>) state.getAttribute(STATE_PAGEING_TOTAL_ITEMS);
+        if (!subs.isEmpty() && !(subs.get(0) instanceof SubmitterSubmission)) {
+            return 1;
+        }
         int subIndex = 0;
 
         for (int i = 0; i < subs.size(); ++i) {
